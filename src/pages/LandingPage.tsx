@@ -1,14 +1,59 @@
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { Code2, Trophy, Zap, Users, Rocket, Target, LogOut } from 'lucide-react'
+import { Code2, Trophy, Zap, Users, Rocket, Target, LogOut, Clock, ArrowRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+
+interface Challenge {
+  id: string
+  title: string
+  description: string
+  duration_hours: number
+  status: string
+  created_at: string
+}
 
 export default function LandingPage() {
   const navigate = useNavigate()
   const { user, signOut } = useAuth()
+  const [challenges, setChallenges] = useState<Challenge[]>([])
+  const [loadingChallenges, setLoadingChallenges] = useState(true)
+
+  useEffect(() => {
+    fetchChallenges()
+  }, [])
+
+  const fetchChallenges = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('*')
+        .eq('status', 'active')
+        .order('created_at', { ascending: false })
+        .limit(6)
+
+      if (error) throw error
+      setChallenges(data || [])
+    } catch (error) {
+      console.error('Error fetching challenges:', error)
+    } finally {
+      setLoadingChallenges(false)
+    }
+  }
 
   const handleSignOut = async () => {
     await signOut()
     navigate('/')
+  }
+
+  const handleChallengeClick = (challengeId: string) => {
+    if (user) {
+      // User is logged in, go to challenge detail
+      navigate(`/challenges/${challengeId}`)
+    } else {
+      // User not logged in, redirect to signup
+      navigate('/signup?type=builder')
+    }
   }
 
   return (
@@ -186,6 +231,84 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Active Challenges Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Active Challenges
+          </h2>
+          <p className="text-dark-400 text-lg">
+            Browse ongoing challenges and start building today
+          </p>
+        </div>
+
+        {loadingChallenges ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+          </div>
+        ) : challenges.length === 0 ? (
+          <div className="text-center py-12">
+            <Trophy className="h-16 w-16 text-dark-600 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-white mb-2">No active challenges yet</h3>
+            <p className="text-dark-400">Check back soon for new challenges!</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {challenges.map((challenge) => (
+                <div
+                  key={challenge.id}
+                  onClick={() => handleChallengeClick(challenge.id)}
+                  className="card hover:border-primary-500/50 transition-all duration-200 hover:scale-[1.02] cursor-pointer group"
+                >
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-white group-hover:text-primary-400 transition-colors line-clamp-2 mb-2">
+                        {challenge.title}
+                      </h3>
+                    </div>
+                    <span className="px-2 py-1 bg-green-500/10 text-green-500 rounded text-xs font-medium flex-shrink-0 ml-2">
+                      Active
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-dark-400 text-sm mb-4 line-clamp-3">
+                    {challenge.description}
+                  </p>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between pt-4 border-t border-dark-700">
+                    <div className="flex items-center space-x-2 text-dark-400 text-sm">
+                      <Clock className="h-4 w-4" />
+                      <span>{challenge.duration_hours}h</span>
+                    </div>
+                    <div className="flex items-center space-x-1 text-primary-500 text-sm font-medium group-hover:text-primary-400 transition-colors">
+                      <span>{user ? 'View Details' : 'Sign up to join'}</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* View All Button */}
+            {challenges.length >= 6 && (
+              <div className="text-center">
+                <button
+                  onClick={() => user ? navigate('/challenges') : navigate('/signup?type=builder')}
+                  className="btn-secondary inline-flex items-center space-x-2"
+                >
+                  <span>View All Challenges</span>
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {/* Footer */}
