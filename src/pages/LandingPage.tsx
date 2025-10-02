@@ -112,17 +112,17 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12">
         <div className="text-center">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-4">
             <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
               Build. Ship. Win.
             </span>
           </h1>
-          <p className="text-xl sm:text-2xl text-dark-300 mb-3 max-w-3xl mx-auto">
+          <p className="text-xl sm:text-2xl text-dark-300 mb-2 max-w-3xl mx-auto">
             The competition platform where AI builders prove their skills through real products, not puzzles.
           </p>
-          <p className="text-lg text-dark-400 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-dark-400 mb-6 max-w-2xl mx-auto">
             Join company-sponsored challenges, ship working prototypes, and land your next opportunity.
           </p>
 
@@ -178,21 +178,26 @@ export default function LandingPage() {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
             </div>
           ) : challenges.length > 0 && (
-            <div className="mb-16">
+            <div className="mb-0">
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 text-center">
                 Active Challenges
               </h2>
 
-              {/* Challenges Grid with Gradient Fade Effect */}
-              <div className="relative">
+              {/* Challenges Grid with Half-Cut Bottom Row */}
+              <div className="relative pb-32">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {challenges.map((challenge, index) => (
                     <div
                       key={challenge.id}
                       onClick={() => handleChallengeClick(challenge.id)}
                       className={`card hover:border-primary-500/50 transition-all duration-200 hover:scale-[1.02] cursor-pointer group ${
-                        index >= 3 ? 'opacity-60' : ''
+                        index >= 3 ? 'relative' : ''
                       }`}
+                      style={index >= 3 ? {
+                        maxHeight: '50%',
+                        overflow: 'hidden',
+                        opacity: 0.7
+                      } : {}}
                     >
                       {/* Header */}
                       <div className="flex items-start justify-between mb-3">
@@ -226,28 +231,30 @@ export default function LandingPage() {
                   ))}
                 </div>
 
-                {/* Gradient Overlay for bottom 3 cards */}
+                {/* Strong Gradient Overlay for bottom half */}
                 {challenges.length >= 4 && (
-                  <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-dark-900 via-dark-900/80 to-transparent pointer-events-none"></div>
+                  <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-dark-900 via-dark-900/95 to-transparent pointer-events-none z-10"></div>
                 )}
-              </div>
-
-              {/* View All Button */}
-              <div className="text-center mt-8">
-                <button
-                  onClick={() => user ? navigate('/challenges') : navigate('/signup?type=builder')}
-                  className="btn-primary inline-flex items-center space-x-2"
-                >
-                  <span>{user ? 'View All Challenges' : 'Sign Up to See All'}</span>
-                  <ArrowRight className="h-5 w-5" />
-                </button>
               </div>
             </div>
           )}
 
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
-            <div className="card hover:border-primary-500/50 transition-all">
+          {/* View All Button - Positioned above features */}
+          {challenges.length > 0 && (
+            <div className="text-center -mt-16 mb-12 relative z-20">
+              <button
+                onClick={() => user ? navigate('/challenges') : navigate('/signup?type=builder')}
+                className="btn-primary inline-flex items-center space-x-2 shadow-xl"
+              >
+                <span>{user ? 'View All Challenges' : 'Sign Up to See All'}</span>
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </div>
+          )}
+
+          {/* Features Grid - Overlaps bottom half of challenges */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 -mt-24 relative z-20">
+            <div className="card hover:border-primary-500/50 transition-all bg-dark-800/95 backdrop-blur-sm">
               <div className="flex justify-center mb-4">
                 <div className="p-3 bg-primary-500/10 rounded-lg">
                   <Zap className="h-8 w-8 text-primary-500" />
@@ -259,7 +266,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="card hover:border-primary-500/50 transition-all">
+            <div className="card hover:border-primary-500/50 transition-all bg-dark-800/95 backdrop-blur-sm">
               <div className="flex justify-center mb-4">
                 <div className="p-3 bg-primary-500/10 rounded-lg">
                   <Trophy className="h-8 w-8 text-primary-500" />
@@ -271,7 +278,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="card hover:border-primary-500/50 transition-all">
+            <div className="card hover:border-primary-500/50 transition-all bg-dark-800/95 backdrop-blur-sm">
               <div className="flex justify-center mb-4">
                 <div className="p-3 bg-primary-500/10 rounded-lg">
                   <Users className="h-8 w-8 text-primary-500" />
