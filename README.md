@@ -221,4 +221,4 @@ This is a hackathon-ready prototype focused on function over perfection. The fou
 
 ## 📄 License
 
-MIT
+MIT# Trigger deployment
