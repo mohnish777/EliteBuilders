@@ -178,26 +178,21 @@ export default function LandingPage() {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
             </div>
           ) : challenges.length > 0 && (
-            <div className="mb-0">
+            <div className="mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 text-center">
                 Active Challenges
               </h2>
 
-              {/* Challenges Grid with Half-Cut Bottom Row */}
-              <div className="relative pb-32">
+              {/* Challenges Grid with Partial Bottom Row */}
+              <div className="relative overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {challenges.map((challenge, index) => (
                     <div
                       key={challenge.id}
                       onClick={() => handleChallengeClick(challenge.id)}
-                      className={`card hover:border-primary-500/50 transition-all duration-200 hover:scale-[1.02] cursor-pointer group ${
-                        index >= 3 ? 'relative' : ''
+                      className={`card hover:border-primary-500/50 transition-all duration-200 hover:scale-[1.02] cursor-pointer group relative ${
+                        index >= 3 ? 'opacity-80' : ''
                       }`}
-                      style={index >= 3 ? {
-                        maxHeight: '50%',
-                        overflow: 'hidden',
-                        opacity: 0.7
-                      } : {}}
                     >
                       {/* Header */}
                       <div className="flex items-start justify-between mb-3">
@@ -227,34 +222,37 @@ export default function LandingPage() {
                           <ArrowRight className="h-4 w-4" />
                         </div>
                       </div>
+
+                      {/* Gradient overlay on bottom 3 cards - stronger effect */}
+                      {index >= 3 && (
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent from-30% via-dark-900/40 via-60% to-dark-900 pointer-events-none rounded-lg"></div>
+                      )}
                     </div>
                   ))}
                 </div>
 
-                {/* Strong Gradient Overlay for bottom half */}
+                {/* Strong mask to cut bottom row at 60-70% */}
                 {challenges.length >= 4 && (
-                  <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-dark-900 via-dark-900/95 to-transparent pointer-events-none z-10"></div>
+                  <div className="absolute left-0 right-0 bottom-0 h-40 bg-gradient-to-t from-dark-900 from-10% via-dark-900/95 via-50% to-transparent pointer-events-none"></div>
                 )}
+              </div>
+
+              {/* View All Button */}
+              <div className="text-center mt-6 relative z-20">
+                <button
+                  onClick={() => user ? navigate('/challenges') : navigate('/signup?type=builder')}
+                  className="btn-primary inline-flex items-center space-x-2"
+                >
+                  <span>{user ? 'View All Challenges' : 'Sign Up to See All'}</span>
+                  <ArrowRight className="h-5 w-5" />
+                </button>
               </div>
             </div>
           )}
 
-          {/* View All Button - Positioned above features */}
-          {challenges.length > 0 && (
-            <div className="text-center -mt-16 mb-12 relative z-20">
-              <button
-                onClick={() => user ? navigate('/challenges') : navigate('/signup?type=builder')}
-                className="btn-primary inline-flex items-center space-x-2 shadow-xl"
-              >
-                <span>{user ? 'View All Challenges' : 'Sign Up to See All'}</span>
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </div>
-          )}
-
-          {/* Features Grid - Overlaps bottom half of challenges */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 -mt-24 relative z-20">
-            <div className="card hover:border-primary-500/50 transition-all bg-dark-800/95 backdrop-blur-sm">
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            <div className="card hover:border-primary-500/50 transition-all">
               <div className="flex justify-center mb-4">
                 <div className="p-3 bg-primary-500/10 rounded-lg">
                   <Zap className="h-8 w-8 text-primary-500" />
@@ -266,7 +264,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="card hover:border-primary-500/50 transition-all bg-dark-800/95 backdrop-blur-sm">
+            <div className="card hover:border-primary-500/50 transition-all">
               <div className="flex justify-center mb-4">
                 <div className="p-3 bg-primary-500/10 rounded-lg">
                   <Trophy className="h-8 w-8 text-primary-500" />
@@ -278,7 +276,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="card hover:border-primary-500/50 transition-all bg-dark-800/95 backdrop-blur-sm">
+            <div className="card hover:border-primary-500/50 transition-all">
               <div className="flex justify-center mb-4">
                 <div className="p-3 bg-primary-500/10 rounded-lg">
                   <Users className="h-8 w-8 text-primary-500" />
