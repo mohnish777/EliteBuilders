@@ -57,7 +57,7 @@ export default function Challenges() {
       <header className="bg-dark-800 border-b border-dark-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
               <Code2 className="h-8 w-8 text-primary-500" />
               <div>
                 <h1 className="text-2xl font-bold text-white">Active Challenges</h1>
@@ -65,7 +65,7 @@ export default function Challenges() {
                   Browse and join challenges to showcase your skills
                 </p>
               </div>
-            </div>
+            </Link>
             <Link to="/" className="btn-secondary">
               Back to Home
             </Link>

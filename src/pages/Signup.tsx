@@ -61,7 +61,7 @@ export default function Signup() {
     <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <Link to="/" className="text-center mb-8 block hover:opacity-80 transition-opacity">
           <div className="flex justify-center mb-4">
             <Code2 className="h-12 w-12 text-primary-500" />
           </div>
@@ -69,7 +69,7 @@ export default function Signup() {
             EliteBuilders
           </h1>
           <p className="text-dark-400 mt-2">Create your account</p>
-        </div>
+        </Link>
 
         {/* Form */}
         <div className="card">

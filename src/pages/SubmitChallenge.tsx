@@ -3,15 +3,17 @@ import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
 import { Challenge } from '../types'
-import { 
-  Code2, 
-  ArrowLeft, 
-  AlertCircle, 
-  Upload, 
-  Github, 
+import { scoreSubmission } from '../utils/scoringService'
+import {
+  Code2,
+  ArrowLeft,
+  AlertCircle,
+  Upload,
+  Github,
   Video,
   CheckCircle,
-  Loader
+  Loader,
+  Sparkles
 } from 'lucide-react'
 
 export default function SubmitChallenge() {
@@ -27,6 +29,7 @@ export default function SubmitChallenge() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [scoring, setScoring] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
@@ -155,6 +158,27 @@ export default function SubmitChallenge() {
         finalVideoUrl = await uploadVideoFile(videoFile)
       }
 
+      // Score the submission using AI
+      setScoring(true)
+      const scoringResult = await scoreSubmission(
+        githubUrl,
+        challenge?.title || '',
+        challenge?.description || ''
+      )
+      setScoring(false)
+
+      let finalScore = 0
+      let scoreBreakdown = null
+
+      if (scoringResult.success && scoringResult.score) {
+        finalScore = scoringResult.score.total
+        scoreBreakdown = scoringResult.score
+      } else {
+        console.warn('Scoring failed, using default score:', scoringResult.error)
+        // Use a default score if AI scoring fails
+        finalScore = 50
+      }
+
       // Check if user already submitted
       const { data: existingSubmission } = await supabase
         .from('submissions')
@@ -169,6 +193,8 @@ export default function SubmitChallenge() {
           .update({
             github_url: githubUrl,
             demo_video_url: finalVideoUrl,
+            llm_score: finalScore,
+            score_breakdown: scoreBreakdown,
             created_at: new Date().toISOString()
           })
           .eq('id', existingSubmission[0].id)
@@ -183,7 +209,8 @@ export default function SubmitChallenge() {
             builder_id: user?.id,
             github_url: githubUrl,
             demo_video_url: finalVideoUrl,
-            llm_score: 0
+            llm_score: finalScore,
+            score_breakdown: scoreBreakdown
           }])
 
         if (insertError) throw insertError
@@ -197,6 +224,7 @@ export default function SubmitChallenge() {
       console.error('Error submitting:', error)
       setError(error.message || 'Failed to submit. Please try again.')
       setSubmitting(false)
+      setScoring(false)
     }
   }
 
@@ -244,10 +272,10 @@ export default function SubmitChallenge() {
       <nav className="border-b border-dark-700 bg-dark-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <Code2 className="h-8 w-8 text-primary-500" />
               <span className="text-xl font-bold text-white">EliteBuilders</span>
-            </div>
+            </Link>
             <Link
               to={`/challenges/${id}`}
               className="flex items-center space-x-2 text-dark-400 hover:text-white transition-colors"
@@ -404,13 +432,23 @@ export default function SubmitChallenge() {
             </Link>
             <button
               type="submit"
-              disabled={submitting || uploading}
+              disabled={submitting || uploading || scoring}
               className="btn-primary flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting || uploading ? (
+              {uploading ? (
                 <>
                   <Loader className="h-5 w-5 animate-spin" />
-                  <span>{uploading ? 'Uploading...' : 'Submitting...'}</span>
+                  <span>Uploading Video...</span>
+                </>
+              ) : scoring ? (
+                <>
+                  <Sparkles className="h-5 w-5 animate-pulse" />
+                  <span>AI Scoring...</span>
+                </>
+              ) : submitting ? (
+                <>
+                  <Loader className="h-5 w-5 animate-spin" />
+                  <span>Submitting...</span>
                 </>
               ) : (
                 <>

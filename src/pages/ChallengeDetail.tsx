@@ -144,8 +144,10 @@ export default function ChallengeDetail() {
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
-            <Code2 className="h-6 w-6 text-primary-500" />
-            <h1 className="text-xl font-bold text-white">Challenge Details</h1>
+            <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <Code2 className="h-6 w-6 text-primary-500" />
+              <h1 className="text-xl font-bold text-white">Challenge Details</h1>
+            </Link>
           </div>
         </div>
       </header>
@@ -199,11 +201,12 @@ export default function ChallengeDetail() {
                 </h3>
                 <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
                   {submissions.slice(0, 10).map((submission, index) => (
-                    <div
+                    <Link
                       key={submission.id}
-                      className="flex items-center justify-between p-3 bg-dark-800 rounded-lg border border-dark-700 hover:border-primary-500/50 transition-colors"
+                      to={`/submissions/${submission.id}`}
+                      className="flex items-center justify-between p-3 bg-dark-800 rounded-lg border border-dark-700 hover:border-primary-500/50 hover:bg-dark-750 transition-all group cursor-pointer"
                     >
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 flex-1 min-w-0">
                         <div
                           className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${
                             index === 0
@@ -217,7 +220,7 @@ export default function ChallengeDetail() {
                         >
                           {index + 1}
                         </div>
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <p className="text-white text-sm font-medium truncate">
                             {submission.builder_id === user?.id ? '🎯 You' : 'Builder'}
                           </p>
@@ -232,7 +235,7 @@ export default function ChallengeDetail() {
                         <p className="text-primary-400 font-bold text-lg">{submission.llm_score}</p>
                         <p className="text-dark-500 text-xs">points</p>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
                 {submissions.length > 10 && (

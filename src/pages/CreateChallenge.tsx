@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
 import { Code2, AlertCircle, Clock, FileText, ArrowLeft } from 'lucide-react'
@@ -76,8 +76,10 @@ export default function CreateChallenge() {
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
-            <Code2 className="h-6 w-6 text-primary-500" />
-            <h1 className="text-xl font-bold text-white">Create New Challenge</h1>
+            <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <Code2 className="h-6 w-6 text-primary-500" />
+              <h1 className="text-xl font-bold text-white">Create New Challenge</h1>
+            </Link>
           </div>
         </div>
       </header>

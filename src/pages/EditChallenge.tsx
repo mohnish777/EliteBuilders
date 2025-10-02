@@ -149,10 +149,10 @@ export default function EditChallenge() {
       <nav className="border-b border-dark-700 bg-dark-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <Code2 className="h-8 w-8 text-primary-500" />
               <span className="text-xl font-bold text-white">EliteBuilders</span>
-            </div>
+            </Link>
             <Link
               to="/host/dashboard"
               className="flex items-center space-x-2 text-dark-400 hover:text-white transition-colors"

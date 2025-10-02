@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Code2, Trophy, Zap, Users, Rocket, Target, LogOut } from 'lucide-react'
 import { useState, useEffect } from 'react'
@@ -38,12 +38,12 @@ export default function LandingPage() {
       <nav className="border-b border-dark-700 bg-dark-900/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <Code2 className="h-8 w-8 text-primary-500" />
               <span className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">
                 EliteBuilders
               </span>
-            </div>
+            </Link>
             <div className="flex items-center space-x-4">
               {user ? (
                 <>

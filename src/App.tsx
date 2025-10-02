@@ -11,6 +11,7 @@ import ChallengeDetail from './pages/ChallengeDetail'
 import CreateChallenge from './pages/CreateChallenge'
 import EditChallenge from './pages/EditChallenge'
 import SubmitChallenge from './pages/SubmitChallenge'
+import SubmissionDetail from './pages/SubmissionDetail'
 import TestPage from './pages/TestPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -53,6 +54,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Submission Detail Route */}
+          <Route path="/submissions/:id" element={<SubmissionDetail />} />
 
           {/* Dynamic route - Must come AFTER specific routes */}
           <Route path="/challenges/:id" element={<ChallengeDetail />} />
