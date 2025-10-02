@@ -1,31 +1,10 @@
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Code2, Trophy, Zap, Users, Rocket, Target, LogOut } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
 
 export default function LandingPage() {
   const navigate = useNavigate()
   const { user, signOut } = useAuth()
-  const [userRole, setUserRole] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (user) {
-      fetchUserRole()
-    }
-  }, [user])
-
-  const fetchUserRole = async () => {
-    if (!user) return
-
-    const { data } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-
-    setUserRole(data?.role || null)
-  }
 
   const handleSignOut = async () => {
     await signOut()

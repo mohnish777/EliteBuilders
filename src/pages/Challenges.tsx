@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { Challenge } from '../types'
-import { Code2, Clock, User, Calendar, Search, Filter } from 'lucide-react'
+import { Code2, Clock, Calendar, Search, Filter } from 'lucide-react'
 
 export default function Challenges() {
   const [challenges, setChallenges] = useState<Challenge[]>([])

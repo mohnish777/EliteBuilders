@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { Challenge, Submission } from '../types'
-import { Code2, LogOut, Trophy, Clock, Target, Calendar, ArrowRight, Search, Github, Video, Award } from 'lucide-react'
+import { Code2, LogOut, Trophy, Clock, Target, Calendar, ArrowRight, Github, Video, Award } from 'lucide-react'
 
 export default function BuilderDashboard() {
   const { user, signOut } = useAuth()

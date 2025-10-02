@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { ArrowLeft, Github, Video, Trophy, CheckCircle, XCircle, Loader, Sparkles } from 'lucide-react'
+import { ArrowLeft, Github, Video, Trophy, XCircle, Loader, Sparkles } from 'lucide-react'
 import { ScoreBreakdown } from '../utils/scoringService'
 
 interface Submission {

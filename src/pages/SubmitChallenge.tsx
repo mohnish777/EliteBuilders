@@ -92,7 +92,7 @@ export default function SubmitChallenge() {
       const fileName = `${user?.id}/${id}/${Date.now()}.${fileExt}`
 
       // Upload to Supabase Storage
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from('demo-videos')
         .upload(fileName, file, {
           cacheControl: '3600',
