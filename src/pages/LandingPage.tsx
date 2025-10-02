@@ -112,22 +112,22 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20">
         <div className="text-center">
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6">
             <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
               Build. Ship. Win.
             </span>
           </h1>
-          <p className="text-xl sm:text-2xl text-dark-300 mb-4 max-w-3xl mx-auto">
+          <p className="text-xl sm:text-2xl text-dark-300 mb-3 max-w-3xl mx-auto">
             The competition platform where AI builders prove their skills through real products, not puzzles.
           </p>
-          <p className="text-lg text-dark-400 mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-dark-400 mb-8 max-w-2xl mx-auto">
             Join company-sponsored challenges, ship working prototypes, and land your next opportunity.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             {user ? (
               <>
                 <button
@@ -171,6 +171,79 @@ export default function LandingPage() {
               </>
             )}
           </div>
+
+          {/* Active Challenges Section - Moved here for better visibility */}
+          {loadingChallenges ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+            </div>
+          ) : challenges.length > 0 && (
+            <div className="mb-16">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 text-center">
+                Active Challenges
+              </h2>
+
+              {/* Challenges Grid with Gradient Fade Effect */}
+              <div className="relative">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {challenges.map((challenge, index) => (
+                    <div
+                      key={challenge.id}
+                      onClick={() => handleChallengeClick(challenge.id)}
+                      className={`card hover:border-primary-500/50 transition-all duration-200 hover:scale-[1.02] cursor-pointer group ${
+                        index >= 3 ? 'opacity-60' : ''
+                      }`}
+                    >
+                      {/* Header */}
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold text-white group-hover:text-primary-400 transition-colors line-clamp-2 mb-2">
+                            {challenge.title}
+                          </h3>
+                        </div>
+                        <span className="px-2 py-1 bg-green-500/10 text-green-500 rounded text-xs font-medium flex-shrink-0 ml-2">
+                          Active
+                        </span>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-dark-400 text-sm mb-4 line-clamp-3">
+                        {challenge.description}
+                      </p>
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between pt-4 border-t border-dark-700">
+                        <div className="flex items-center space-x-2 text-dark-400 text-sm">
+                          <Clock className="h-4 w-4" />
+                          <span>{challenge.duration_hours}h</span>
+                        </div>
+                        <div className="flex items-center space-x-1 text-primary-500 text-sm font-medium group-hover:text-primary-400 transition-colors">
+                          <span>{user ? 'View Details' : 'Sign up to join'}</span>
+                          <ArrowRight className="h-4 w-4" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Gradient Overlay for bottom 3 cards */}
+                {challenges.length >= 4 && (
+                  <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-dark-900 via-dark-900/80 to-transparent pointer-events-none"></div>
+                )}
+              </div>
+
+              {/* View All Button */}
+              <div className="text-center mt-8">
+                <button
+                  onClick={() => user ? navigate('/challenges') : navigate('/signup?type=builder')}
+                  className="btn-primary inline-flex items-center space-x-2"
+                >
+                  <span>{user ? 'View All Challenges' : 'Sign Up to See All'}</span>
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
@@ -233,83 +306,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Active Challenges Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Active Challenges
-          </h2>
-          <p className="text-dark-400 text-lg">
-            Browse ongoing challenges and start building today
-          </p>
-        </div>
 
-        {loadingChallenges ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-          </div>
-        ) : challenges.length === 0 ? (
-          <div className="text-center py-12">
-            <Trophy className="h-16 w-16 text-dark-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">No active challenges yet</h3>
-            <p className="text-dark-400">Check back soon for new challenges!</p>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {challenges.map((challenge) => (
-                <div
-                  key={challenge.id}
-                  onClick={() => handleChallengeClick(challenge.id)}
-                  className="card hover:border-primary-500/50 transition-all duration-200 hover:scale-[1.02] cursor-pointer group"
-                >
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white group-hover:text-primary-400 transition-colors line-clamp-2 mb-2">
-                        {challenge.title}
-                      </h3>
-                    </div>
-                    <span className="px-2 py-1 bg-green-500/10 text-green-500 rounded text-xs font-medium flex-shrink-0 ml-2">
-                      Active
-                    </span>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-dark-400 text-sm mb-4 line-clamp-3">
-                    {challenge.description}
-                  </p>
-
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-dark-700">
-                    <div className="flex items-center space-x-2 text-dark-400 text-sm">
-                      <Clock className="h-4 w-4" />
-                      <span>{challenge.duration_hours}h</span>
-                    </div>
-                    <div className="flex items-center space-x-1 text-primary-500 text-sm font-medium group-hover:text-primary-400 transition-colors">
-                      <span>{user ? 'View Details' : 'Sign up to join'}</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* View All Button */}
-            {challenges.length >= 6 && (
-              <div className="text-center">
-                <button
-                  onClick={() => user ? navigate('/challenges') : navigate('/signup?type=builder')}
-                  className="btn-secondary inline-flex items-center space-x-2"
-                >
-                  <span>View All Challenges</span>
-                  <ArrowRight className="h-5 w-5" />
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
 
       {/* Footer */}
       <footer className="border-t border-dark-700 mt-20">
