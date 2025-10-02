@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Challenges</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body style="padding: 20px; font-family: Arial;">
+    <h1>Challenge Test</h1>
+    <div id="output"></div>
+    
+    <script>
+        const SUPABASE_URL = 'https://dvapgzzjlfvjvkdykzgw.supabase.co'
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2YXBnenpqbGZ2anZrZHlremd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY5NzI5NzcsImV4cCI6MjA1MjU0ODk3N30.VYlOqKCZE0Yz8Yz-Yz0Yz0Yz0Yz0Yz0Yz0Yz0Yz0Yz0'
+        
+        const { createClient } = supabase
+        const client = createClient(SUPABASE_URL, SUPABASE_KEY)
+        
+        async function testChallenges() {
+            const output = document.getElementById('output')
+            output.innerHTML = '<p>Testing...</p>'
+            
+            try {
+                // Test 1: Fetch challenges
+                const { data: challenges, error } = await client
+                    .from('challenges')
+                    .select('*')
+                    .eq('status', 'active')
+                
+                if (error) {
+                    output.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`
+                    return
+                }
+                
+                output.innerHTML = `
+                    <h2>✅ Found ${challenges.length} challenges!</h2>
+                    <pre>${JSON.stringify(challenges, null, 2)}</pre>
+                `
+            } catch (err) {
+                output.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`
+            }
+        }
+        
+        testChallenges()
+    </script>
+</body>
+</html>
