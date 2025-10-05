@@ -189,24 +189,35 @@ EliteBuilders/
 - ✅ Supabase client configuration
 - ✅ React Router with protected routes
 - ✅ Tailwind CSS with custom theme
-- ✅ Authentication (Sign up, Sign in, Sign out)
+- ✅ Authentication (Email/Password + GitHub OAuth)
 - ✅ User type selection (Builder vs Host)
-- ✅ Landing page with CTAs
-- ✅ Builder dashboard
-- ✅ Host dashboard
+- ✅ Landing page with challenge preview
+- ✅ Builder dashboard with submissions
+- ✅ Host dashboard with challenge management
+- ✅ Challenge creation, editing, and deletion
+- ✅ Challenge browsing and detail pages
+- ✅ Submission system (GitHub URL + video upload)
+- ✅ AI-powered scoring with Groq API
+- ✅ Real GitHub repository analysis
+- ✅ Leaderboard with live rankings
 - ✅ Mobile-first responsive design
 - ✅ Modern, developer-friendly UI
+- ✅ Deployed to Vercel
 
-## 🔜 Coming Soon
+## 📚 Documentation
 
-- Challenge creation and management
-- Challenge browsing and joining
-- Submission system (GitHub + video)
-- LLM-powered scoring
-- Leaderboards
-- User profiles
-- Notifications
-- Search and filters
+All documentation has been organized in the **[docs/](./docs/)** directory:
+
+- **[Quick Start Guide](./docs/START_HERE.md)** - Start here if you're new
+- **[Architecture](./docs/ARCHITECTURE.md)** - System architecture overview
+- **[Authentication](./docs/AUTH_IMPLEMENTATION_SUMMARY.md)** - Auth implementation
+- **[Challenge Management](./docs/CHALLENGE_MANAGEMENT_GUIDE.md)** - Managing challenges
+- **[Submission System](./docs/SUBMISSION_SYSTEM_GUIDE.md)** - Submission workflow
+- **[AI Scoring](./docs/LLM_SCORING_IMPLEMENTATION.md)** - AI scoring system
+- **[Deployment Guide](./docs/DEPLOYMENT_GUIDE.md)** - Deploy to production
+- **[SQL Scripts](./docs/sql/)** - Database setup scripts
+
+**See [docs/README.md](./docs/README.md) for complete documentation index.**
 
 ## 📝 Available Scripts
 
